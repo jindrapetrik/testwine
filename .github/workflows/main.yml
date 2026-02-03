@@ -68,6 +68,6 @@ jobs:
         #cp splash.bmp ${{ github.workspace }}/tools/wine/splash.bmp
         #cp ffdec.exe ${{ github.workspace }}/tools/wine/ffdec.exe
         #wine $RH_EXE -open ${{ github.workspace }}/tools/wine/ffdec.exe -save ${{ github.workspace }}/tools/wine/out.exe -action addoverwrite -res ${{ github.workspace }}/tools/wine/splash.bmp -mask BITMAP,1
-        export CICD_TEMP=${{ github.workspace }} 
+        export CICD_TEMP="${{ github.workspace }}"
         chmod 0777 ./cicd_scripts/script.sh
         ./cicd_scripts/script.sh
