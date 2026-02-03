@@ -59,7 +59,7 @@ jobs:
     - name: Build
       env:
         WINEPREFIX: ${{ github.workspace }}/tools/wine/
-        RH_EXE: ${{ github.workspace }}/tools/resourcehacker/ResourceHacker.exe
+        RH_EXE: ${{ github.workspace }}/tools/wine/resourcehacker/ResourceHacker.exe
         WINEDEBUG: "-all"      
       run: |        
         cp splash.bmp ${WINEPREFIX}splash.bmp
