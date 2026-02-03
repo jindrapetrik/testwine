@@ -40,21 +40,21 @@ jobs:
         mkdir -p $WINEPREFIX
         winecfg
         
-    - name: Install Resource Hacker
-      env:
-        RH_DIR: ${{ github.workspace }}/tools/wine/resourcehacker
-        RH_ZIP: ${{ github.workspace }}/tools/wine/resourcehacker.zip
-        RH_URL: https://www.angusj.com/resourcehacker/resource_hacker.zip
-      run: |              
-        set -euxo pipefail
-        
-        apt-get install -y -qq unzip wget
-        
-        mkdir -p "$(dirname "$RH_ZIP")"
-        mkdir -p "$RH_DIR"
-
-        wget -O "$RH_ZIP" "$RH_URL"
-        unzip -o "$RH_ZIP" -d "$RH_DIR"
+#    - name: Install Resource Hacker
+#      env:
+#        RH_DIR: ${{ github.workspace }}/tools/wine/resourcehacker
+#        RH_ZIP: ${{ github.workspace }}/tools/wine/resourcehacker.zip
+#        RH_URL: https://www.angusj.com/resourcehacker/resource_hacker.zip
+#      run: |              
+#        set -euxo pipefail
+#        
+#        apt-get install -y -qq unzip wget
+#        
+#        mkdir -p "$(dirname "$RH_ZIP")"
+#        mkdir -p "$RH_DIR"
+#
+#        wget -O "$RH_ZIP" "$RH_URL"
+#        unzip -o "$RH_ZIP" -d "$RH_DIR"
         
     - name: Build
       env:
@@ -63,7 +63,7 @@ jobs:
         WINEDEBUG: "-all"      
       run: |        
         mkdir -p ${{ github.workspace }}/tools/wine
-        cp hello.exe ${{ github.workspace }}/tools/wine/
+        cp ${{ github.workspace }}/hello.exe ${{ github.workspace }}/tools/wine/
         wine ${{ github.workspace }}/tools/wine/hello.exe
         #cp splash.bmp ${{ github.workspace }}/tools/wine/splash.bmp
         #cp ffdec.exe ${{ github.workspace }}/tools/wine/ffdec.exe
