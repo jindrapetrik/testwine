@@ -40,26 +40,26 @@ jobs:
         mkdir -p $WINEPREFIX
         winecfg
         
-#    - name: Install Resource Hacker
-#      env:
-#        RH_DIR: ${{ github.workspace }}/tools/wine/resourcehacker
-#        RH_ZIP: ${{ github.workspace }}/tools/wine/resourcehacker.zip
-#        RH_URL: https://www.angusj.com/resourcehacker/resource_hacker.zip
-#      run: |              
-#        set -euxo pipefail
-#        
-#        apt-get install -y -qq unzip wget
-#        
-#        mkdir -p "$(dirname "$RH_ZIP")"
-#        mkdir -p "$RH_DIR"
-#
-#        wget -O "$RH_ZIP" "$RH_URL"
-#        unzip -o "$RH_ZIP" -d "$RH_DIR"
+    - name: Install Resource Hacker
+      env:
+        RH_DIR: tools/wine/resourcehacker
+        RH_ZIP: tools/wine/resourcehacker.zip
+        RH_URL: https://www.angusj.com/resourcehacker/resource_hacker.zip
+      run: |              
+        set -euxo pipefail
+        
+        apt-get install -y -qq unzip wget
+        
+        mkdir -p "$(dirname "$RH_ZIP")"
+        mkdir -p "$RH_DIR"
+
+        wget -O "$RH_ZIP" "$RH_URL"
+        unzip -o "$RH_ZIP" -d "$RH_DIR"
         
     - name: Build
       env:
         #WINEPREFIX: tools/wine
-        RH_EXE: ${{ github.workspace }}/tools/wine/resourcehacker/ResourceHacker.exe
+        RH_EXE: tools/wine/resourcehacker/ResourceHacker.exe
         WINEDEBUG: "-all"      
       run: |        
         #mkdir -p ${{ github.workspace }}/tools/wine
@@ -69,5 +69,8 @@ jobs:
         #cp ffdec.exe ${{ github.workspace }}/tools/wine/ffdec.exe
         #wine $RH_EXE -open ${{ github.workspace }}/tools/wine/ffdec.exe -save ${{ github.workspace }}/tools/wine/out.exe -action addoverwrite -res ${{ github.workspace }}/tools/wine/splash.bmp -mask BITMAP,1
         export WINEPREFIX=$(pwd)/tools/wine
-        cp hello.exe $WINEPREFIX/
-        wine $WINEPREFIX/hello.exe
+        
+        wine tools/wine/resourcehacker/ResourceHacker.exe -open tools/wine/ffdec.exe -save tools/wine/out.exe -action addoverwrite -res tools/wine/splash.bmp -mask BITMAP,1
+        ls -la
+        #cp hello.exe $WINEPREFIX/
+        #wine $WINEPREFIX/hello.exe
