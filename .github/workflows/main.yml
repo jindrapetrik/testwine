@@ -78,6 +78,6 @@ jobs:
         
         #xvfb-run wine $WINEPREFIX/resourcehacker/ResourceHacker.exe -open $WINEPREFIX/ffdec.exe -save $WINEPREFIX/out.exe -action addoverwrite -res $WINEPREFIX/splash.bmp -mask BITMAP,1
         #
-        ls -la $WINEPREFIX/
+        ls -la $WINEPREFIX/resourcehacker/
         #cp hello.exe $WINEPREFIX/
         #wine $WINEPREFIX/hello.exe
