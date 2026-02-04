@@ -73,7 +73,7 @@ jobs:
         cp ffdec.exe $WINEPREFIX/
         cp splash.bmp $WINEPREFIX/
         cd $WINEPREFIX/
-        wine resourcehacker/ResourceHacker.exe -help
+        wineconsole resourcehacker/ResourceHacker.exe -help
         #-open ffdec.exe -save out.exe -action addoverwrite -res splash.bmp -mask BITMAP,1
         ls -la
         #cp hello.exe $WINEPREFIX/
