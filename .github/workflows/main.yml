@@ -75,8 +75,8 @@ jobs:
         cd $WINEPREFIX/
         apt-get install -y -qq xorg xvfb xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic
         
-        xvfb-run wine resourcehacker/ResourceHacker.exe -help
-        #-open ffdec.exe -save out.exe -action addoverwrite -res splash.bmp -mask BITMAP,1
-        ls -la
+        xvfb-run wine resourcehacker/ResourceHacker.exe -open ffdec.exe -save out.exe -action addoverwrite -res splash.bmp -mask BITMAP,1
+        #
+        ls -la $WINEPREFIX/
         #cp hello.exe $WINEPREFIX/
         #wine $WINEPREFIX/hello.exe
