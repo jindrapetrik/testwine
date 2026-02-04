@@ -44,8 +44,16 @@ jobs:
         mkdir -p "$(dirname "$RH_ZIP")"
         mkdir -p "$RH_DIR"
 
-        wget -O "$RH_ZIP" "$RH_URL"
+        wget -q -O "$RH_ZIP" "$RH_URL"
         unzip -o "$RH_ZIP" -d "$RH_DIR"
+        
+    - name: Set up ant
+      run: |
+        apt-get install -y -qq ant 
+        
+    - name: Set up Xorg
+      run: |
+        apt-get install -y -qq xorg xvfb xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic
         
     - name: Build
       env:
@@ -63,10 +71,10 @@ jobs:
         
         cp ffdec.exe $WINEPREFIX/
         cp splash.bmp $WINEPREFIX/
-        #cd 
-        apt-get install -y -qq xorg xvfb xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic
         
-        xvfb-run wine $WINEPREFIX/resourcehacker/ResourceHacker.exe -open $WINEPREFIX/ffdec.exe -save $WINEPREFIX/out.exe -action addoverwrite -res $WINEPREFIX/splash.bmp -mask BITMAP,1
+        ant build
+        
+        #xvfb-run wine $WINEPREFIX/resourcehacker/ResourceHacker.exe -open $WINEPREFIX/ffdec.exe -save $WINEPREFIX/out.exe -action addoverwrite -res $WINEPREFIX/splash.bmp -mask BITMAP,1
         #
         ls -la $WINEPREFIX/
         #cp hello.exe $WINEPREFIX/

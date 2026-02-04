@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="testwine" basedir="." default="build">
+    <description>Builds project FFDec</description> 
+    
+    <target name="build">
+        <property name="reshack.path" value="tools/wine/resourcehacker/" />
+        <exec executable="xvfb-run" failonerror="true">
+            <arg value="wine" />
+            <arg value="${reshack.path}ResourceHacker.exe"/>
+            <arg value="-open"/><arg value="${reshack.path}ffdec.exe"/>
+            <arg value="-save"/><arg value="${reshack.path}out.exe"/>
+            <arg value="-action"/><arg value="addoverwrite"/>
+            <arg value="-res"/><arg value="${reshack.path}splash.bmp"/>
+            <arg value="-mask"/><arg value="BITMAP,1"/>
+        </exec>
+    </target>  
+</project>
