@@ -69,15 +69,15 @@ jobs:
         #wine $RH_EXE -open ${{ github.workspace }}/tools/wine/ffdec.exe -save ${{ github.workspace }}/tools/wine/out.exe -action addoverwrite -res ${{ github.workspace }}/tools/wine/splash.bmp -mask BITMAP,1
         export WINEPREFIX=$(pwd)/tools/wine
         
-        mkdir -p $WINEPREFIX/resourcehacker
+        #mkdir -p $WINEPREFIX/resourcehacker
         
-        cp ffdec.exe $WINEPREFIX/resourcehacker/
-        cp splash.bmp $WINEPREFIX/resourcehacker/
+        #cp ffdec.exe $WINEPREFIX/resourcehacker/
+        #cp splash.bmp $WINEPREFIX/resourcehacker/
         
         ant build
         
         #xvfb-run wine $WINEPREFIX/resourcehacker/ResourceHacker.exe -open $WINEPREFIX/ffdec.exe -save $WINEPREFIX/out.exe -action addoverwrite -res $WINEPREFIX/splash.bmp -mask BITMAP,1
         #
-        ls -la $WINEPREFIX/resourcehacker/
+        ls -la tools/wine/resourcehacker/
         #cp hello.exe $WINEPREFIX/
         #wine $WINEPREFIX/hello.exe
