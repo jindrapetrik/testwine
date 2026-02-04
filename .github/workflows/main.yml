@@ -73,7 +73,9 @@ jobs:
         cp ffdec.exe $WINEPREFIX/
         cp splash.bmp $WINEPREFIX/
         cd $WINEPREFIX/
-        wineconsole resourcehacker/ResourceHacker.exe -help
+        apt-get install -y -qq xorg xvfb xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic
+        
+        xvfb-run wine resourcehacker/ResourceHacker.exe -help
         #-open ffdec.exe -save out.exe -action addoverwrite -res splash.bmp -mask BITMAP,1
         ls -la
         #cp hello.exe $WINEPREFIX/
