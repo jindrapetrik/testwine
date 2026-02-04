@@ -63,10 +63,10 @@ jobs:
         
         cp ffdec.exe $WINEPREFIX/
         cp splash.bmp $WINEPREFIX/
-        cd $WINEPREFIX/
+        #cd 
         apt-get install -y -qq xorg xvfb xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic
         
-        xvfb-run wine resourcehacker/ResourceHacker.exe -open ffdec.exe -save out.exe -action addoverwrite -res splash.bmp -mask BITMAP,1
+        xvfb-run wine $WINEPREFIX/resourcehacker/ResourceHacker.exe -open ffdec.exe -save out.exe -action addoverwrite -res splash.bmp -mask BITMAP,1
         #
         ls -la $WINEPREFIX/
         #cp hello.exe $WINEPREFIX/
