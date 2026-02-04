@@ -4,7 +4,7 @@
     
     <target name="build">
         <property name="reshack.path" value="tools/wine/resourcehacker/" />
-        <exec executable="xvfb-run" failonerror="true">
+        <exec executable="xvfb-run" failonerror="false">
             <arg value="wine" />
             <arg value="${reshack.path}ResourceHacker.exe"/>
             <arg value="-open"/><arg value="${reshack.path}ffdec.exe"/>
