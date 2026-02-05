@@ -41,10 +41,23 @@ jobs:
         env:
           GH_TOKEN: ${{secrets.GH_TOKEN}}
         run: |
-          gh release download --repo GoogleCloudPlatform/kms-integrations --pattern "*cng*.msi" --dir "$env:RUNNER_TEMP"
+          $repo = "GoogleCloudPlatform/kms-integrations"
+          $tmp  = "$env:RUNNER_TEMP\kms"
+          New-Item -ItemType Directory -Force -Path $tmp | Out-Null
 
-          $msi = Get-ChildItem "$env:RUNNER_TEMP" -Filter "*.msi" | Select-Object -First 1
-          if (-not $msi) { throw "MSI installer of CNG provider not found." }
+          gh release download --repo $repo --pattern "*windows-amd64*.zip" --dir $tmp
+
+          $zip = Get-ChildItem $tmp -Filter "*.zip" | Select-Object -First 1
+          if (-not $zip) { throw "ZIP asset not found (pattern *windows-amd64*.zip). Check names in releases." }
+
+          $extract = Join-Path $tmp "extract"
+          New-Item -ItemType Directory -Force -Path $extract | Out-Null
+          Expand-Archive -Path $zip.FullName -DestinationPath $extract -Force
+
+          $msi = Get-ChildItem $extract -Recurse -Filter "*.msi" | Select-Object -First 1
+          if (-not $msi) { throw "MSI not found inside ZIP. Check structure of archive in releases." }
+
+          Write-Host "Installing: $($msi.FullName)"
 
           Start-Process msiexec.exe -Wait -ArgumentList "/i `"$($msi.FullName)`" /qn /norestart"
 
