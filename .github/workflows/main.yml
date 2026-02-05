@@ -24,6 +24,7 @@ jobs:
       KMS_KEY: jpexs-ffdec-key
       KMS_KEY_VERSION: "1"
       GOOGLE_APPLICATION_CREDENTIALS_JSON: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON}}
+      GOOGLE_APPLICATION_CREDENTIALS: "gcp/credentials.yml"
       
       CERT_PATH: "user.crt"
       EXE_PATH: "ffdec.exe"
@@ -80,7 +81,7 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path gcp | Out-Null
-          $env:GOOGLE_APPLICATION_CREDENTIALS_JSON | Out-File gcp/credentials.yml -Encoding utf8 -NoNewline
+          $env:GOOGLE_APPLICATION_CREDENTIALS_JSON | Out-File $env:GOOGLE_APPLICATION_CREDENTIALS -Encoding utf8 -NoNewline
       
       - name: Locate signtool
         id: signtool
