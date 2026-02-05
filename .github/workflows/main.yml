@@ -24,7 +24,7 @@ jobs:
       KMS_KEY: jpexs-ffdec-key
       KMS_KEY_VERSION: "1"
       GOOGLE_APPLICATION_CREDENTIALS_JSON: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON}}
-      GOOGLE_APPLICATION_CREDENTIALS: "gcp/credentials.yml"
+      GOOGLE_APPLICATION_CREDENTIALS: "gcp/credentials.json"
       
       CERT_PATH: "user.crt"
       EXE_PATH: "ffdec.exe"
