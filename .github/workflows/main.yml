@@ -109,6 +109,9 @@ jobs:
         shell: pwsh
         run: |
           $signtool = "${{ steps.signtool.outputs.path }}"
+          
+          certutil -csplist
+          certutil -csp "Google Cloud KMS Provider" -csptest
 
           $kc = "projects/$env:GCP_PROJECT_ID/locations/$env:GCP_LOCATION/keyRings/$env:KMS_KEYRING/cryptoKeys/$env:KMS_KEY/cryptoKeyVersions/$env:KMS_KEY_VERSION"
 
