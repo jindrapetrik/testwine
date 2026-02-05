@@ -81,7 +81,10 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path gcp | Out-Null
-          $env:GOOGLE_APPLICATION_CREDENTIALS_JSON | Out-File $env:GOOGLE_APPLICATION_CREDENTIALS -Encoding utf8 -NoNewline
+          $abs = Join-Path $PWD "gcp/credentials.json"
+          $env:GOOGLE_APPLICATION_CREDENTIALS_JSON | Out-File $abs -Encoding utf8 -NoNewline
+          
+          "GOOGLE_APPLICATION_CREDENTIALS=$abs" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
       
       - name: Locate signtool
         id: signtool
@@ -124,7 +127,7 @@ jobs:
         if: always()
         shell: pwsh
         run: |
-          Remove-Item gcp/credentials.yml -Force
+          Remove-Item $env:GOOGLE_APPLICATION_CREDENTIALS -Force
 #  build:
 #
 #    runs-on: ubuntu-latest
