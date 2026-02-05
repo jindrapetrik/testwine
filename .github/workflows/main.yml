@@ -45,8 +45,23 @@ jobs:
           $tmp  = "$env:RUNNER_TEMP\kms"
           New-Item -ItemType Directory -Force -Path $tmp | Out-Null
 
-          gh release download --repo $repo --pattern "*windows-amd64*.zip" --dir $tmp
+          $tag = gh release list `
+            --repo $repo `
+            --limit 50 `
+            --json tagName,createdAt `
+            -q '[.[] | select(.tagName | startswith("cng-"))][0].tagName'
 
+          if (-not $tag) {
+            throw "No release found with tag cng-*"
+          }
+
+          Write-Host "Using release tag: $tag"
+
+          gh release download $tag `
+            --repo $repo `
+            --pattern "*windows-amd64*.zip" `
+            --dir $tmp
+          
           $zip = Get-ChildItem $tmp -Filter "*.zip" | Select-Object -First 1
           if (-not $zip) { throw "ZIP asset not found (pattern *windows-amd64*.zip). Check names in releases." }
 
