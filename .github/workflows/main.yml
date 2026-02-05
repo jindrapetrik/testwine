@@ -27,9 +27,6 @@ jobs:
       KMS_KEYRING: jpexs-ffdec-keyring
       KMS_KEY: jpexs-ffdec-key
       KMS_KEY_VERSION: "1"
-      GOOGLE_APPLICATION_CREDENTIALS_JSON: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON}}
-      GOOGLE_APPLICATION_CREDENTIALS: "gcp/credentials.json"
-      SIGN_TOOL_PATH: "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.19041.0\\x64\\signtool.exe"
       
       CERT_PATH: "user.crt"
       EXE_PATH: "ffdec.exe"
@@ -87,31 +84,37 @@ jobs:
 
           Start-Process msiexec.exe -Wait -ArgumentList "/i `"$($msi.FullName)`" /qn /norestart"
 
-      #- name: Write Google credentials file
-      #  shell: pwsh
-      #  run: |
-      #    New-Item -ItemType Directory -Force -Path gcp | Out-Null
-      #    $abs = Join-Path $PWD "gcp/credentials.json"
-      #    $env:GOOGLE_APPLICATION_CREDENTIALS_JSON | Out-File $abs -Encoding utf8 -NoNewline
-      #    
-      #    "GOOGLE_APPLICATION_CREDENTIALS=$abs" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
-      
-#      - name: Locate signtool
-#        id: signtool
-#        shell: pwsh
-#        run: |
-#          $candidates = Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin" -Recurse -Filter signtool.exe -ErrorAction SilentlyContinue |
-#            Sort-Object FullName -Descending
-#          if (-not $candidates) { throw "signtool.exe not found. Install Windows SDK or change path." }
-#          $path = $candidates[0].FullName
-#          "path=$path" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
-#          
+      - name: Locate signtool
+        id: signtool
+        shell: pwsh
+        run: |
+          $candidates = Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin" `
+            -Recurse -Filter signtool.exe -ErrorAction SilentlyContinue
+
+          Write-Host "All signtool candidates:"
+          $candidates | ForEach-Object {
+            Write-Host " - $($_.FullName)"
+          }
+
+          # vyber jen x64
+          $x64 = $candidates | Where-Object {
+            $_.FullName -match "\\x64\\"
+          }
+
+          if (-not $x64) {
+            throw "No x64 signtool.exe found"
+          }
+
+          $path = $x64 | Sort-Object FullName -Descending | Select-Object -First 1
+          "path=$path" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          
       - name: Sign EXE with KMS key
         shell: pwsh
-        run: |        
+        run: |      
+          $signtool = "${{ steps.signtool.outputs.path }}"
           $kc = "projects/$env:GCP_PROJECT_ID/locations/$env:GCP_LOCATION/keyRings/$env:KMS_KEYRING/cryptoKeys/$env:KMS_KEY/cryptoKeyVersions/$env:KMS_KEY_VERSION"
 
-          & $env:SIGN_TOOL_PATH sign /v /debug `
+          & $signtool sign /v /debug `
             /fd sha256 `
             /tr "http://timestamp.sectigo.com?td=sha256" /td sha256 `
             /f "$env:CERT_PATH" `
@@ -122,7 +125,8 @@ jobs:
       - name: Verify signature
         shell: pwsh
         run: |
-          & $env:SIGN_TOOL_PATH verify /pa /v "$env:EXE_PATH"
+          $signtool = "${{ steps.signtool.outputs.path }}"
+          & $signtool verify /pa /v "$env:EXE_PATH"
      
       - name: Upload signed artifact
         uses: actions/upload-artifact@v4
