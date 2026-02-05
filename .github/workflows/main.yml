@@ -14,6 +14,10 @@ env:
     CICD_EMAIL: GitHub
     CICD_EVENTNAME: ${{ github.event_name }}
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   sign:
     runs-on: windows-latest
