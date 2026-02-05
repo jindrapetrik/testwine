@@ -111,7 +111,7 @@ jobs:
         run: |        
           $kc = "projects/$env:GCP_PROJECT_ID/locations/$env:GCP_LOCATION/keyRings/$env:KMS_KEYRING/cryptoKeys/$env:KMS_KEY/cryptoKeyVersions/$env:KMS_KEY_VERSION"
 
-          & $SIGN_TOOL_PATH sign /v /debug `
+          & $env:SIGN_TOOL_PATH sign /v /debug `
             /fd sha256 `
             /tr "http://timestamp.sectigo.com?td=sha256" /td sha256 `
             /f "$env:CERT_PATH" `
@@ -122,7 +122,7 @@ jobs:
       - name: Verify signature
         shell: pwsh
         run: |
-          & $SIGN_TOOL_PATH verify /pa /v "$env:EXE_PATH"
+          & $env:SIGN_TOOL_PATH verify /pa /v "$env:EXE_PATH"
      
       - name: Upload signed artifact
         uses: actions/upload-artifact@v4
