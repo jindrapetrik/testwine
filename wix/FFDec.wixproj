@@ -5,10 +5,10 @@
     <Cultures>en-US;ca-ES;cs-CZ;de-DE;es-ES;fr-FR;hu-HU;it-IT;ja-JP;nl-NL;pl-PL;pt-BR;pt-PT;ru-RU;sk-SK;sl-SI;sv-SE;tr-TR;uk-UA;zh-CN</Cultures>
   </PropertyGroup>
   <ItemGroup>
+    <Localization Include="Strings.en-US.wxl" />
     <Localization Include="Strings.ca-ES.wxl" />
     <Localization Include="Strings.cs-CZ.wxl" />
     <Localization Include="Strings.de-DE.wxl" />
-    <Localization Include="Strings.en-US.wxl" />
     <Localization Include="Strings.es-ES.wxl" />
     <Localization Include="Strings.fr-FR.wxl" />
     <Localization Include="Strings.hu-HU.wxl" />
@@ -25,6 +25,6 @@
     <Localization Include="Strings.tr-TR.wxl" />
     <Localization Include="Strings.uk-UA.wxl" />
     <Localization Include="Strings.zh-CN.wxl" />
-    <PackageReference Include="WixToolset.UI.wixext" Version="5.*" />    
+    <PackageReference Include="WixToolset.UI.wixext" Version="5.*" />
   </ItemGroup>
 </Project>
