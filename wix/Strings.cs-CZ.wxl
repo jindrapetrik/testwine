@@ -1,0 +1,4 @@
+<WixLocalization xmlns="http://wixtoolset.org/schemas/v4/wxl" Culture="cs-CZ">
+  <String Id="DesktopShortcut_Title" Value="Zástupce na ploše" />
+  <String Id="DesktopShortcut_Desc"  Value="Vytvoří zástupce na ploše windows." />
+</WixLocalization>

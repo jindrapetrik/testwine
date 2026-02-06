@@ -1,35 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://wixtoolset.org/schemas/v5/wxs">
-  <Package Name="JPEXS Free Flash Decompiler"
+<Wix 
+    xmlns="http://wixtoolset.org/schemas/v4/wxs"
+    xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui"
+>
+  <Package Name="JPEXS Free Flash Decompiler 24.1.2 nightly build 2568"
            Manufacturer="JPEXS"
-           Version="1.0.0.0"
-           UpgradeCode="6F330B47-2577-43AD-9095-1861BA25889B">
+           Version="24.1.2"
+           ProductCode="*"
+           UpgradeCode="E618D276-6596-41F4-8A98-447D442A77DB"
+  >
 
-    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MajorUpgrade AllowSameVersionUpgrades="yes" DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate EmbedCab="yes" />
 
     <Feature Id="ProductFeature" Title="FFDec" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
       <ComponentGroupRef Id="LibComponents" />
-      <ComponentGroupRef Id="FlashlibComponents" />
-      <ComponentRef Id="ProgramMenuDir" />
-      <ComponentRef Id="DesktopShortcut" />
-    </Feature>
-
+      <ComponentGroupRef Id="FlashlibComponents" />   
+      <ComponentRef Id="ProgramMenuDir" />         
+    </Feature>   
+    
+    <Feature Id="DesktopShortcutFeature"
+                Title="!(loc.DesktopShortcut_Title)"
+                Description="!(loc.DesktopShortcut_Desc)"
+                Level="1"
+                AllowAbsent="yes"
+      >
+         <ComponentRef Id="DesktopShortcut" />
+      </Feature>
+         
     <!-- Define the icon -->
     <Icon Id="FFDecIcon" SourceFile="../dist/icon.ico" />
     <Property Id="ARPPRODUCTICON" Value="FFDecIcon" />
+    
+    <Property Id="ARPVERSION" Value="24.1.2 nightly build 2568" />
 
     <!-- Add/Remove Programs properties -->
     <Property Id="ARPHELPLINK" Value="https://github.com/jindrapetrik/jpexs-decompiler" />
 
+    
+    
     <!-- Set installation directory -->
-    <StandardDirectory Id="ProgramFiles64Folder">
+    <StandardDirectory Id="ProgramFilesFolder">
       <Directory Id="INSTALLFOLDER" Name="FFDec">
         <Directory Id="LibDir" Name="lib" />
         <Directory Id="FlashlibDir" Name="flashlib" />
       </Directory>
     </StandardDirectory>
+        
+    <ui:WixUI Id="WixUI_FeatureTree" InstallDirectory="INSTALLFOLDER"/>   
+    
+    <WixVariable Id="WixUILicenseRtf" Value="license.rtf" />
+    
+    <WixVariable Id="WixUIBannerBmp" Value="installer3_493x58.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="installer3_493x312.bmp" />
 
     <StandardDirectory Id="ProgramMenuFolder">
       <Directory Id="ApplicationProgramsFolder" Name="JPEXS Free Flash Decompiler" />
@@ -290,6 +314,12 @@
       </Component>
       <Component Id="webp4j_license" Guid="D7E8F9A0-B1C2-3D4E-5F6A-7B8C9D0E1F3B">
         <File Id="webp4j.license.txt" Source="../dist/lib/webp4j.license.txt" KeyPath="yes" />
+      </Component>
+      <Component Id="jpexs_apng" Guid="1318F135-DD25-4D17-BE4B-A409657E5AC8">
+          <File Id="jpexs_apng.jar" Source="../dist/lib/jpexs-apng.jar" KeyPath="yes" />
+      </Component>
+      <Component Id="jpexs_apng_license" Guid="F1C6D1B5-F963-48F7-BCD5-4CB14C693D27">
+          <File Id="jpexs_apng.license.txt" Source="../dist/lib/jpexs-apng.license.txt" KeyPath="yes" />
       </Component>
     </ComponentGroup>
 
