@@ -20,6 +20,7 @@ permissions:
 
 jobs:
   sign:
+    if: false
     runs-on: windows-latest
     env:
       GCP_PROJECT_ID: jpexs-ffdec
