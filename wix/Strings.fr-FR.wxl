@@ -1,0 +1,4 @@
+<WixLocalization xmlns="http://wixtoolset.org/schemas/v4/wxl" Culture="fr-FR">
+  <String Id="DesktopShortcut_Title" Value="Raccourci bureau" />
+  <String Id="DesktopShortcut_Desc"  Value="Crée un raccourci de l'application sur le bureau." />
+</WixLocalization>

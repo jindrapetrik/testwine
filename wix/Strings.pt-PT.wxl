@@ -1,0 +1,4 @@
+<WixLocalization xmlns="http://wixtoolset.org/schemas/v4/wxl" Culture="pt-PT">
+  <String Id="DesktopShortcut_Title" Value="Atalho no ambiente de trabalho" />
+  <String Id="DesktopShortcut_Desc"  Value="Cria um atalho da aplicação no ambiente de trabalho." />
+</WixLocalization>

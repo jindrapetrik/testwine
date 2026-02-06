@@ -1,0 +1,4 @@
+<WixLocalization xmlns="http://wixtoolset.org/schemas/v4/wxl" Culture="hu-HU">
+  <String Id="DesktopShortcut_Title" Value="Asztali parancsikon" />
+  <String Id="DesktopShortcut_Desc"  Value="Parancsikont hoz létre az alkalmazáshoz az asztalon." />
+</WixLocalization>
