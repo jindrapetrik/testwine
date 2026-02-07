@@ -33,6 +33,15 @@
       >
          <ComponentRef Id="DesktopShortcut" />
       </Feature>
+    
+    <Feature Id="ContextMenuAssociationFeature"
+        Title="!(loc.ContextMenu_Title)"
+        Description="!(loc.ContextMenu_Desc)"
+        Level="1"
+        AllowAbsent="yes"
+    >        
+        <ComponentGroupRef Id="ContextMenuAssociation" />
+    </Feature>
          
     <!-- Define the icon -->
     <Icon Id="FFDecIcon" SourceFile="../dist/icon.ico" />
@@ -88,6 +97,397 @@
                 Icon="FFDecIcon" />
       <RegistryValue Root="HKCU" Key="Software/JPEXS/FFDec" Name="desktopShortcut" Type="integer" Value="1" KeyPath="yes" />
     </Component>
+    
+    <Property Id="VERB" Value="ffdec" />
+    <Property Id="VERB_NAME" Value="Open with FFDec" />
+    <Property Id="VERB_RESOURCE_ID" Value="1001" />
+    <Property Id="SWF_CLASS" Value="ShockwaveFlash.ShockwaveFlash" Secure="yes" />
+    <Property Id="APP_EXENAME" Value="ffdec.exe" />
+    <?define FFDEC_EXTENSIONS = SWF;SPL;GFX;SWT;SWC ?>
+    <!-- SWF;SPL;GFX;SWT;SWC -->
+    
+    <?foreach EXT in $(var.FFDEC_EXTENSIONS) ?>
+        <Property Id="EXT_$(var.EXT)_EXISTS">
+            <RegistrySearch
+                  Id="RegSearch_$(var.EXT)_ExtExists"
+                  Root="HKCR"
+                  Key=".$(var.EXT)"
+                  Type="raw" />
+        </Property>
+        <SetProperty Id="EXT_$(var.EXT)_CLASSNAME"
+             Value="[SWF_CLASS]"
+             Condition="SWF_CLASS" 
+             Sequence="both"
+             Before="CostFinalize"/>
+        <Property Id="EXT_$(var.EXT)_CLASSNAME">
+            <RegistrySearch
+                Id="RegSearch_$(var.EXT)_ExtClassName"                  
+                Root="HKCR"
+                Key=".$(var.EXT)"
+                Type="raw" />
+        </Property>
+        
+        <Property Id="EXT_$(var.EXT)_CLASSNAME_EXISTS">
+          <RegistrySearch
+              Id="RegSearch_$(var.EXT)_ExtClassNameExistss"                                  
+              Root="HKCR"
+              Key="[EXT_$(var.EXT)_CLASSNAME]"
+              Type="raw" />
+        </Property>               
+    <?endforeach ?>
+    
+    <Property Id="SYSTEM_FILE_ASSOCIATIONS">
+        <RegistrySearch
+            Root="HKCR"
+            Key="SystemFileAssociations"
+            Type="raw" />
+    </Property>
+    
+    <Property Id="SYSTEM_FILE_ASSOCIATIONS_EXISTS" Secure="yes"/>
+    <SetProperty Id="SYSTEM_FILE_ASSOCIATIONS_EXISTS"
+                 Value="1"
+                 Sequence="both"
+                 Before="CostFinalize"
+                 Condition="SYSTEM_FILE_ASSOCIATIONS OR SYSTEM_FILE_ASSOCIATIONS=&quot;&quot;"
+    />
+    
+    <!-- Context Menu Association -->
+    <ComponentGroup Id="ContextMenuAssociation">
+        
+        <!-- Register "Application" and its command -->
+        <Component Id="RegApplicationOpenWithList" Guid="16CDB8A3-AD22-4CC4-B361-A22959908549">        
+            <RegistryValue Root="HKCR" Key="Applications\[APP_EXENAME]\shell\open" Value="[VERB]" KeyPath="yes"/>
+            <RegistryValue Root="HKCR" Key="Applications\[APP_EXENAME]\shell\open\command" Value="&quot;[INSTALLFOLDER]\[APP_EXENAME]&quot; &quot;%1&quot;" />
+        </Component>
+
+        <!-- EXTENSION TEMPLATE HERE: -->
+      
+        <!-- Register "Open With" for .swf -->
+        <Component Id="RegSwfOpenWithList" Guid="C2FF23D5-A33C-4BDD-8915-75DA617E63A2">
+            <RegistryValue Root="HKCR" Key=".swf\OpenWithList\[APP_EXENAME]" Value=""/>
+        </Component>
+        <!-- Associate .swf file extension -->
+        <Component Id="RegSwfClassName" Guid="D3CB09F9-71DE-4C37-B0BF-F4DC865A72FF" Condition="NOT EXT_SWF_CLASSNAME_EXISTS">
+            <RegistryValue Root="HKCR" Key="[EXT_SWF_CLASSNAME]" Value="Flash movie"/>        
+        </Component>
+        
+        <Component Id="RegSwfExt" Guid="09E37FF0-4EEF-42B5-9127-4153EBF7FE84" Condition="NOT EXT_SWF_EXISTS">
+            <RegistryValue Root="HKCR" Key=".swf" Value="[SWF_CLASS]"/>
+        </Component>
+        
+        <Component Id="RegSwfAssociations" Guid="7747D6D5-CF84-4423-AF4C-1091507516DB">
+            <RegistryValue 
+                Root="HKCR" 
+                Key="[EXT_SWF_CLASSNAME]\Shell\[VERB]" 
+                Value="[VERB_NAME]"
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="[EXT_SWF_CLASSNAME]\Shell\[VERB]" 
+                Name="Icon"
+                Value="&quot;[INSTALLFOLDER][APP_EXENAME]&quot;,0"
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="[EXT_SWF_CLASSNAME]\Shell\[VERB]\Command" 
+                Value="&quot;[INSTALLFOLDER][APP_EXENAME]&quot; &quot;%1&quot;" 
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="[EXT_SWF_CLASSNAME]\Shell\[VERB]"
+                Name="MUIVerb"
+                Value="@[INSTALLFOLDER][APP_EXENAME],-[VERB_RESOURCE_ID]" 
+            />
+        </Component>
+        
+        <!-- Associate global verb for .swf - if anybody changes default app, it won't remove the verbs -->                        
+        <Component Id="RegSwfSystemFileAssociations" Guid="4F69C9C0-2833-43FC-9D87-3BB6457D3BFF" Condition="SYSTEM_FILE_ASSOCIATIONS_EXISTS">
+            <RegistryValue 
+                Root="HKCR"
+                Key="SystemFileAssociations\.swf\Shell\[VERB]" 
+                Value="[VERB_NAME]" 
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="SystemFileAssociations\.swf\Shell\[VERB]" 
+                Name="Icon"
+                Value="&quot;[INSTALLFOLDER][APP_EXENAME]&quot;,0"
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="SystemFileAssociations\.swf\Shell\[VERB]\Command" 
+                Value="&quot;[INSTALLFOLDER][APP_EXENAME]&quot; &quot;%1&quot;" 
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="SystemFileAssociations\.swf\Shell\[VERB]"
+                Name="MUIVerb"
+                Value="@[INSTALLFOLDER][APP_EXENAME],-[VERB_RESOURCE_ID]" 
+
+            />
+        </Component>
+      
+        <!-- Register "Open With" for .spl -->
+        <Component Id="RegSplOpenWithList" Guid="76639739-38D5-4016-9033-CB77E870361E">
+            <RegistryValue Root="HKCR" Key=".spl\OpenWithList\[APP_EXENAME]" Value=""/>
+        </Component>
+        <!-- Associate .spl file extension -->
+        <Component Id="RegSplClassName" Guid="2D675321-875F-44BC-AA80-4A28A55F1B60" Condition="NOT EXT_SPL_CLASSNAME_EXISTS">
+            <RegistryValue Root="HKCR" Key="[EXT_SPL_CLASSNAME]" Value="Flash movie"/>        
+        </Component>
+        
+        <Component Id="RegSplExt" Guid="658804A5-54D1-487B-943E-6E771B1ADCC0" Condition="NOT EXT_SPL_EXISTS">
+            <RegistryValue Root="HKCR" Key=".spl" Value="[SWF_CLASS]"/>
+        </Component>
+        
+        <Component Id="RegSplAssociations" Guid="81D6095E-AD10-4D8E-8954-035177288706">
+            <RegistryValue 
+                Root="HKCR" 
+                Key="[EXT_SPL_CLASSNAME]\Shell\[VERB]" 
+                Value="[VERB_NAME]"
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="[EXT_SPL_CLASSNAME]\Shell\[VERB]" 
+                Name="Icon"
+                Value="&quot;[INSTALLFOLDER][APP_EXENAME]&quot;,0"
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="[EXT_SPL_CLASSNAME]\Shell\[VERB]\Command" 
+                Value="&quot;[INSTALLFOLDER][APP_EXENAME]&quot; &quot;%1&quot;" 
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="[EXT_SPL_CLASSNAME]\Shell\[VERB]"
+                Name="MUIVerb"
+                Value="@[INSTALLFOLDER][APP_EXENAME],-[VERB_RESOURCE_ID]" 
+            />
+        </Component>
+        
+        <!-- Associate global verb for .spl - if anybody changes default app, it won't remove the verbs -->                        
+        <Component Id="RegSplSystemFileAssociations" Guid="02D6F42A-AD98-46FE-AC54-16E0B6BD9A85" Condition="SYSTEM_FILE_ASSOCIATIONS_EXISTS">
+            <RegistryValue 
+                Root="HKCR"
+                Key="SystemFileAssociations\.spl\Shell\[VERB]" 
+                Value="[VERB_NAME]" 
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="SystemFileAssociations\.spl\Shell\[VERB]" 
+                Name="Icon"
+                Value="&quot;[INSTALLFOLDER][APP_EXENAME]&quot;,0"
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="SystemFileAssociations\.spl\Shell\[VERB]\Command" 
+                Value="&quot;[INSTALLFOLDER][APP_EXENAME]&quot; &quot;%1&quot;" 
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="SystemFileAssociations\.spl\Shell\[VERB]"
+                Name="MUIVerb"
+                Value="@[INSTALLFOLDER][APP_EXENAME],-[VERB_RESOURCE_ID]" 
+
+            />
+        </Component>
+      
+        <!-- Register "Open With" for .gfx -->
+        <Component Id="RegGfxOpenWithList" Guid="FE51A9C3-B416-4849-B598-80861F511701">
+            <RegistryValue Root="HKCR" Key=".gfx\OpenWithList\[APP_EXENAME]" Value=""/>
+        </Component>
+        <!-- Associate .gfx file extension -->
+        <Component Id="RegGfxClassName" Guid="BDAB6B7A-6230-4119-97B9-2EFB92F2A553" Condition="NOT EXT_GFX_CLASSNAME_EXISTS">
+            <RegistryValue Root="HKCR" Key="[EXT_GFX_CLASSNAME]" Value="Flash movie"/>        
+        </Component>
+        
+        <Component Id="RegGfxExt" Guid="B78BC417-842F-4E6F-BF6E-43DACEBA7E3D" Condition="NOT EXT_GFX_EXISTS">
+            <RegistryValue Root="HKCR" Key=".gfx" Value="[SWF_CLASS]"/>
+        </Component>
+        
+        <Component Id="RegGfxAssociations" Guid="7E7EA079-EF9D-4EF1-A92C-5796234B8BFC">
+            <RegistryValue 
+                Root="HKCR" 
+                Key="[EXT_GFX_CLASSNAME]\Shell\[VERB]" 
+                Value="[VERB_NAME]"
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="[EXT_GFX_CLASSNAME]\Shell\[VERB]" 
+                Name="Icon"
+                Value="&quot;[INSTALLFOLDER][APP_EXENAME]&quot;,0"
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="[EXT_GFX_CLASSNAME]\Shell\[VERB]\Command" 
+                Value="&quot;[INSTALLFOLDER][APP_EXENAME]&quot; &quot;%1&quot;" 
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="[EXT_GFX_CLASSNAME]\Shell\[VERB]"
+                Name="MUIVerb"
+                Value="@[INSTALLFOLDER][APP_EXENAME],-[VERB_RESOURCE_ID]" 
+            />
+        </Component>
+        
+        <!-- Associate global verb for .gfx - if anybody changes default app, it won't remove the verbs -->                        
+        <Component Id="RegGfxSystemFileAssociations" Guid="3235D6D7-B18F-4FEE-83BE-576B8AB2C265" Condition="SYSTEM_FILE_ASSOCIATIONS_EXISTS">
+            <RegistryValue 
+                Root="HKCR"
+                Key="SystemFileAssociations\.gfx\Shell\[VERB]" 
+                Value="[VERB_NAME]" 
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="SystemFileAssociations\.gfx\Shell\[VERB]" 
+                Name="Icon"
+                Value="&quot;[INSTALLFOLDER][APP_EXENAME]&quot;,0"
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="SystemFileAssociations\.gfx\Shell\[VERB]\Command" 
+                Value="&quot;[INSTALLFOLDER][APP_EXENAME]&quot; &quot;%1&quot;" 
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="SystemFileAssociations\.gfx\Shell\[VERB]"
+                Name="MUIVerb"
+                Value="@[INSTALLFOLDER][APP_EXENAME],-[VERB_RESOURCE_ID]" 
+
+            />
+        </Component>
+      
+        <!-- Register "Open With" for .swt -->
+        <Component Id="RegSwtOpenWithList" Guid="5CE57415-754B-4690-9BAF-B469B968E28A">
+            <RegistryValue Root="HKCR" Key=".swt\OpenWithList\[APP_EXENAME]" Value=""/>
+        </Component>
+        <!-- Associate .swt file extension -->
+        <Component Id="RegSwtClassName" Guid="878BF3FC-6601-4DBE-A400-05EFCFDA0B29" Condition="NOT EXT_SWT_CLASSNAME_EXISTS">
+            <RegistryValue Root="HKCR" Key="[EXT_SWT_CLASSNAME]" Value="Flash movie"/>        
+        </Component>
+        
+        <Component Id="RegSwtExt" Guid="B013A21C-DE86-499B-BF01-544EFD585341" Condition="NOT EXT_SWT_EXISTS">
+            <RegistryValue Root="HKCR" Key=".swt" Value="[SWF_CLASS]"/>
+        </Component>
+        
+        <Component Id="RegSwtAssociations" Guid="85A58BE3-53EF-4493-B783-D5A960D5EAF8">
+            <RegistryValue 
+                Root="HKCR" 
+                Key="[EXT_SWT_CLASSNAME]\Shell\[VERB]" 
+                Value="[VERB_NAME]"
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="[EXT_SWT_CLASSNAME]\Shell\[VERB]" 
+                Name="Icon"
+                Value="&quot;[INSTALLFOLDER][APP_EXENAME]&quot;,0"
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="[EXT_SWT_CLASSNAME]\Shell\[VERB]\Command" 
+                Value="&quot;[INSTALLFOLDER][APP_EXENAME]&quot; &quot;%1&quot;" 
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="[EXT_SWT_CLASSNAME]\Shell\[VERB]"
+                Name="MUIVerb"
+                Value="@[INSTALLFOLDER][APP_EXENAME],-[VERB_RESOURCE_ID]" 
+            />
+        </Component>
+        
+        <!-- Associate global verb for .swt - if anybody changes default app, it won't remove the verbs -->                        
+        <Component Id="RegSwtSystemFileAssociations" Guid="0E325D31-A8A1-4EFD-9510-AC3D53E5D979" Condition="SYSTEM_FILE_ASSOCIATIONS_EXISTS">
+            <RegistryValue 
+                Root="HKCR"
+                Key="SystemFileAssociations\.swt\Shell\[VERB]" 
+                Value="[VERB_NAME]" 
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="SystemFileAssociations\.swt\Shell\[VERB]" 
+                Name="Icon"
+                Value="&quot;[INSTALLFOLDER][APP_EXENAME]&quot;,0"
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="SystemFileAssociations\.swt\Shell\[VERB]\Command" 
+                Value="&quot;[INSTALLFOLDER][APP_EXENAME]&quot; &quot;%1&quot;" 
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="SystemFileAssociations\.swt\Shell\[VERB]"
+                Name="MUIVerb"
+                Value="@[INSTALLFOLDER][APP_EXENAME],-[VERB_RESOURCE_ID]" 
+
+            />
+        </Component>
+      
+        <!-- Register "Open With" for .swc -->
+        <Component Id="RegSwcOpenWithList" Guid="9CE9498D-1F4E-4FF3-9288-ADC1C5249A37">
+            <RegistryValue Root="HKCR" Key=".swc\OpenWithList\[APP_EXENAME]" Value=""/>
+        </Component>
+        <!-- Associate .swc file extension -->
+        <Component Id="RegSwcClassName" Guid="EDC49B73-AA4A-46D7-8FA4-C499073B881C" Condition="NOT EXT_SWC_CLASSNAME_EXISTS">
+            <RegistryValue Root="HKCR" Key="[EXT_SWC_CLASSNAME]" Value="Flash movie"/>        
+        </Component>
+        
+        <Component Id="RegSwcExt" Guid="8EE15DD9-C779-4891-A0FD-76CA6B67642A" Condition="NOT EXT_SWC_EXISTS">
+            <RegistryValue Root="HKCR" Key=".swc" Value="[SWF_CLASS]"/>
+        </Component>
+        
+        <Component Id="RegSwcAssociations" Guid="8A86896D-7212-4992-961F-0E845AE1B1AF">
+            <RegistryValue 
+                Root="HKCR" 
+                Key="[EXT_SWC_CLASSNAME]\Shell\[VERB]" 
+                Value="[VERB_NAME]"
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="[EXT_SWC_CLASSNAME]\Shell\[VERB]" 
+                Name="Icon"
+                Value="&quot;[INSTALLFOLDER][APP_EXENAME]&quot;,0"
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="[EXT_SWC_CLASSNAME]\Shell\[VERB]\Command" 
+                Value="&quot;[INSTALLFOLDER][APP_EXENAME]&quot; &quot;%1&quot;" 
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="[EXT_SWC_CLASSNAME]\Shell\[VERB]"
+                Name="MUIVerb"
+                Value="@[INSTALLFOLDER][APP_EXENAME],-[VERB_RESOURCE_ID]" 
+            />
+        </Component>
+        
+        <!-- Associate global verb for .swc - if anybody changes default app, it won't remove the verbs -->                        
+        <Component Id="RegSwcSystemFileAssociations" Guid="A2D67704-B8E1-4990-BD67-FE5443D32707" Condition="SYSTEM_FILE_ASSOCIATIONS_EXISTS">
+            <RegistryValue 
+                Root="HKCR"
+                Key="SystemFileAssociations\.swc\Shell\[VERB]" 
+                Value="[VERB_NAME]" 
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="SystemFileAssociations\.swc\Shell\[VERB]" 
+                Name="Icon"
+                Value="&quot;[INSTALLFOLDER][APP_EXENAME]&quot;,0"
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="SystemFileAssociations\.swc\Shell\[VERB]\Command" 
+                Value="&quot;[INSTALLFOLDER][APP_EXENAME]&quot; &quot;%1&quot;" 
+            />
+            <RegistryValue 
+                Root="HKCR" 
+                Key="SystemFileAssociations\.swc\Shell\[VERB]"
+                Name="MUIVerb"
+                Value="@[INSTALLFOLDER][APP_EXENAME],-[VERB_RESOURCE_ID]" 
+
+            />
+        </Component>
+<!-- /EXTENSION TEMPLATE HERE: -->
+    </ComponentGroup>
 
     <!-- Main product components -->
     <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
@@ -339,3 +739,15 @@
     </ComponentGroup>
   </Package>
 </Wix>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,7 +1,8 @@
 set MsiName=%1
-set lang=%2
-set langcode=%3
+set BuildType=%2
+set lang=%3
+set langcode=%4
 
-msitran.exe -g bin\Release\en-US\%MsiName%.msi bin\Release\%lang%\%MsiName%.msi %langcode%
-msidb.exe -d bin\Release\%MsiName%.msi -r %langcode%
+msitran.exe -g bin\%BuildType%\en-US\%MsiName%.msi bin\%BuildType%\%lang%\%MsiName%.msi %langcode%
+msidb.exe -d bin\%BuildType%\%MsiName%.msi -r %langcode%
 del %langcode%
