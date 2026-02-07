@@ -2,4 +2,5 @@
   <String Id="GuiLibs_Desc" Value="Application GUI et librairies" />
   <String Id="DesktopShortcut_Title" Value="Raccourci bureau" />
   <String Id="DesktopShortcut_Desc"  Value="Crée un raccourci de l'application sur le bureau." />
+  <String Id="DowngradeErrorMessage" Value="Une version plus récente de [ProductName] est déjà installée." />
 </WixLocalization>
