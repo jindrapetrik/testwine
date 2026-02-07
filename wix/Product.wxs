@@ -3,9 +3,9 @@
     xmlns="http://wixtoolset.org/schemas/v4/wxs"
     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui"
 >
-  <Package Name="JPEXS Free Flash Decompiler 24.1.2 nightly build 2568"
+  <Package Name="JPEXS Free Flash Decompiler 1.0.0"
            Manufacturer="JPEXS"
-           Version="24.1.2"
+           Version="1.0.0"
            ProductCode="*"
            UpgradeCode="E618D276-6596-41F4-8A98-447D442A77DB"
   >
@@ -47,7 +47,7 @@
     <Icon Id="FFDecIcon" SourceFile="../dist/icon.ico" />
     <Property Id="ARPPRODUCTICON" Value="FFDecIcon" />
     
-    <Property Id="ARPVERSION" Value="24.1.2 nightly build 2568" />
+    <Property Id="ARPVERSION" Value="1.0.0" />
 
     <!-- Add/Remove Programs properties -->
     <Property Id="ARPHELPLINK" Value="https://github.com/jindrapetrik/jpexs-decompiler" />
