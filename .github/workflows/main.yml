@@ -36,7 +36,6 @@ jobs:
             Write-Host " - $($_.FullName)"
           }
 
-          # vyber jen x64
           $x86 = $candidates | Where-Object {
             $_.FullName -match "\\x86\\"
           }
