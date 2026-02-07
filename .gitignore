@@ -1,0 +1,5 @@
+# WiX build artifacts
+wix/bin/
+wix/obj/
+*.msi
+*.wixpdb

@@ -1,0 +1,5 @@
+<WixLocalization xmlns="http://wixtoolset.org/schemas/v4/wxl" Culture="en-US">
+  <String Id="GuiLibs_Desc" Value="Application GUI and Libraries." />
+  <String Id="DesktopShortcut_Title" Value="Desktop shortcut" />
+  <String Id="DesktopShortcut_Desc"  Value="Creates shortcut of the application on the desktop." />
+</WixLocalization>

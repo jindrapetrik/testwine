@@ -1,0 +1,5 @@
+<WixLocalization xmlns="http://wixtoolset.org/schemas/v4/wxl" Culture="uk-UA">
+  <String Id="GuiLibs_Desc" Value="Графічний інтерфейс і бібліотеки програми" />
+  <String Id="DesktopShortcut_Title" Value="Ярлик на робочому столі" />
+  <String Id="DesktopShortcut_Desc"  Value="Створює ярлик програми на робочому столі." />
+</WixLocalization>

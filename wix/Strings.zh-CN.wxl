@@ -1,0 +1,5 @@
+<WixLocalization xmlns="http://wixtoolset.org/schemas/v4/wxl" Culture="zh-CN">
+  <String Id="GuiLibs_Desc" Value="应用程序GUI和库" />
+  <String Id="DesktopShortcut_Title" Value="桌面快捷方式" />
+  <String Id="DesktopShortcut_Desc"  Value="在桌面上创建应用程序的快捷方式。" />
+</WixLocalization>
