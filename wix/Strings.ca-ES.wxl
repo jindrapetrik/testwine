@@ -1,4 +1,5 @@
 <WixLocalization xmlns="http://wixtoolset.org/schemas/v4/wxl" Culture="ca-ES">
+  <String Id="GuiLibs_Desc" Value="Application GUI and Libraries" />
   <String Id="DesktopShortcut_Title" Value="Drecera d'escriptori" />
   <String Id="DesktopShortcut_Desc"  Value="Crea una drecera de l'aplicació a l'escriptori." />
 </WixLocalization>

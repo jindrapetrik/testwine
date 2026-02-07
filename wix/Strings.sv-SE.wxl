@@ -1,4 +1,5 @@
 <WixLocalization xmlns="http://wixtoolset.org/schemas/v4/wxl" Culture="sv-SE">
+  <String Id="GuiLibs_Desc" Value="Application GUI and Libraries" />
   <String Id="DesktopShortcut_Title" Value="Genväg på skrivbordet" />
   <String Id="DesktopShortcut_Desc"  Value="Skapar en genväg till programmet på skrivbordet." />
 </WixLocalization>

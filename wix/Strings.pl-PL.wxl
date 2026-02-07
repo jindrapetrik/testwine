@@ -1,4 +1,5 @@
 <WixLocalization xmlns="http://wixtoolset.org/schemas/v4/wxl" Culture="pl-PL">
+  <String Id="GuiLibs_Desc" Value="Application GUI and Libraries" />
   <String Id="DesktopShortcut_Title" Value="Skrót na pulpicie" />
   <String Id="DesktopShortcut_Desc"  Value="Tworzy skrót do aplikacji na pulpicie." />
 </WixLocalization>

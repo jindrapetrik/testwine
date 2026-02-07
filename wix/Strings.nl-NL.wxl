@@ -1,4 +1,5 @@
 <WixLocalization xmlns="http://wixtoolset.org/schemas/v4/wxl" Culture="nl-NL">
+  <String Id="GuiLibs_Desc" Value="Applicatie-GUI en bibliotheken" />
   <String Id="DesktopShortcut_Title" Value="Snelkoppeling op bureaublad" />
   <String Id="DesktopShortcut_Desc"  Value="Maakt een snelkoppeling naar de applicatie op het bureaublad." />
 </WixLocalization>

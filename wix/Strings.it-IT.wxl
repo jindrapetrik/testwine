@@ -1,4 +1,5 @@
 <WixLocalization xmlns="http://wixtoolset.org/schemas/v4/wxl" Culture="it-IT">
+  <String Id="GuiLibs_Desc" Value="Interfaccia grafica applicazione (GUI) e librerie" />
   <String Id="DesktopShortcut_Title" Value="Collegamento sul desktop" />
   <String Id="DesktopShortcut_Desc"  Value="Crea un collegamento dell'applicazione sul desktop." />
 </WixLocalization>

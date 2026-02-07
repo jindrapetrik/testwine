@@ -1,4 +1,5 @@
 <WixLocalization xmlns="http://wixtoolset.org/schemas/v4/wxl" Culture="sk-SK">
+  <String Id="GuiLibs_Desc" Value="Grafické rozhranie a knižnice" />
   <String Id="DesktopShortcut_Title" Value="Odkaz na ploche" />
   <String Id="DesktopShortcut_Desc"  Value="Vytvorí odkaz na aplikáciu na ploche." />
 </WixLocalization>
