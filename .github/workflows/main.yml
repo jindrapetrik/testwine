@@ -167,6 +167,11 @@ jobs:
     needs: compute-version
     if: needs.compute-version.outputs.doRelease == 'true'
     steps:
+      - name: Check ver
+        shell: pwsh
+        run: |
+          echo verlong=${{ needs.compute-version.outputs.verLong }}
+          exit 1
       - name: Checkout
         uses: actions/checkout@v4
         
