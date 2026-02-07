@@ -78,7 +78,7 @@ jobs:
         shell: pwsh
         run: |
             cd wix
-            Build.cmd
+            .\Build.cmd
       - name: Upload signed artifact
         uses: actions/upload-artifact@v4
         with:
