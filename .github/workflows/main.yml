@@ -22,6 +22,9 @@ jobs:
   installer:
     runs-on: windows-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
       - name: Add MsiTran to PATH
         shell: pwsh
         run: |
