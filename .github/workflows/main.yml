@@ -198,6 +198,7 @@ jobs:
         shell: pwsh
         run: |
             $template = Get-Content -Path 'wix\Product.wxs' -Raw -Encoding UTF8
+            $t = $template
             $t = $t -creplace 'Version="JPEXS Free Flash Decompiler 1.0.0"', 'Version="JPEXS Free Flash Decompiler ${{ needs.compute-version.outputs.verLong }}"'
             $t = $t -creplace 'Version="1.0.0"', 'Version="${{ needs.compute-version.outputs.verRaw }}"' 
             $t = $t -creplace 'Id="ARPVERSION" Value="1.0.0"', 'Version="Id="ARPVERSION" Value="${{ needs.compute-version.outputs.verLong }}"'
