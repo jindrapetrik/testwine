@@ -2,8 +2,15 @@ name: build
 
 on:
   push:
+    tags:
+        - version*
     branches: 
+        - dev
         - master        
+  pull_request:
+    branches:
+        - dev
+        - master       
 
 env:
     CICD_REPO_SLUG: jindrapetrik/jpexs-decompiler
