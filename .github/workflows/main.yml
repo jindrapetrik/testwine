@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   compute-version:
-    name: Compute version/release variables
+    name: Compute version
     runs-on: windows-latest
 
     outputs:
