@@ -19,6 +19,68 @@ permissions:
   id-token: write
 
 jobs:
+  installer:
+    runs-on: windows-latest
+    steps:
+      - name: Add MsiTran to PATH
+        shell: pwsh
+        run: |
+          $candidates = Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin" `
+            -Recurse -Filter MsiTran.exe -ErrorAction SilentlyContinue
+
+          Write-Host "All signtool candidates:"
+          $candidates | ForEach-Object {
+            Write-Host " - $($_.FullName)"
+          }
+
+          # vyber jen x64
+          $x86 = $candidates | Where-Object {
+            $_.FullName -match "\\x86\\"
+          }
+
+          if (-not $x86) {
+            throw "No x86 MsiTran.exe found"
+          }
+
+          $path = $x86 | Sort-Object FullName -Descending | Select-Object -First 1
+          $path = Split-Path $path -Parent
+          
+          Add-Content $env:GITHUB_PATH $path
+          
+      - name: Add Msi tools to PATH
+        shell: pwsh
+        run: |
+          $candidates = Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin" `
+            -Recurse -Filter MsiTran.exe -ErrorAction SilentlyContinue
+
+          Write-Host "All signtool candidates:"
+          $candidates | ForEach-Object {
+            Write-Host " - $($_.FullName)"
+          }
+
+          # vyber jen x64
+          $x86 = $candidates | Where-Object {
+            $_.FullName -match "\\x86\\"
+          }
+
+          if (-not $x86) {
+            throw "No x86 MsiTran.exe found"
+          }
+
+          $path = $x86 | Sort-Object FullName -Descending | Select-Object -First 1
+          $path = Split-Path $path -Parent
+          
+          Add-Content $env:GITHUB_PATH $path
+      - name: Create installer
+        shell: pwsh
+        run: |
+            cd wix
+            Build.cmd
+      - name: Upload signed artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: installer
+          path: wix/bin/Release/FFDec.msi
   sign:
     if: false
     runs-on: windows-latest
