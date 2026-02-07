@@ -167,11 +167,6 @@ jobs:
     needs: compute-version
     if: needs.compute-version.outputs.doRelease == 'true'
     steps:
-      - name: Check ver
-        shell: pwsh
-        run: |
-          echo verlong=${{ needs.compute-version.outputs.verLong }}
-          exit 1
       - name: Checkout
         uses: actions/checkout@v4
         
@@ -204,7 +199,7 @@ jobs:
         run: |
             $template = Get-Content -Path 'wix\Product.wxs' -Raw -Encoding UTF8
             $t = $template
-            $t = $t -creplace 'Version="JPEXS Free Flash Decompiler 1.0.0"', 'Version="JPEXS Free Flash Decompiler ${{ needs.compute-version.outputs.verLong }}"'
+            $t = $t -creplace 'Name="JPEXS Free Flash Decompiler 1.0.0"', 'Name="JPEXS Free Flash Decompiler ${{ needs.compute-version.outputs.verLong }}"'
             $t = $t -creplace 'Version="1.0.0"', 'Version="${{ needs.compute-version.outputs.verRaw }}"' 
             $t = $t -creplace 'Id="ARPVERSION" Value="1.0.0"', 'Id="ARPVERSION" Value="${{ needs.compute-version.outputs.verLong }}"'
             Set-Content -Path 'wix\Product.wxs' -Value $t -Encoding UTF8
