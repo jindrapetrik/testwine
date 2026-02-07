@@ -2,4 +2,5 @@
   <String Id="GuiLibs_Desc" Value="GUI de la aplicación y librerías" />
   <String Id="DesktopShortcut_Title" Value="Acceso directo en el escritorio" />
   <String Id="DesktopShortcut_Desc"  Value="Crea un acceso directo de la aplicación en el escritorio." />
+  <String Id="DowngradeErrorMessage" Value="Ya está instalada una versión más reciente de [ProductName]." />
 </WixLocalization>

@@ -2,4 +2,5 @@
   <String Id="GuiLibs_Desc" Value="GUI アプリケーションとライブラリ" />
   <String Id="DesktopShortcut_Title" Value="デスクトップショートカット" />
   <String Id="DesktopShortcut_Desc"  Value="デスクトップにアプリケーションのショートカットを作成します。" />
+  <String Id="DowngradeErrorMessage" Value="[ProductName] の新しいバージョンが既にインストールされています。" />
 </WixLocalization>

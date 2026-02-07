@@ -10,7 +10,7 @@
            UpgradeCode="E618D276-6596-41F4-8A98-447D442A77DB"
   >
 
-    <MajorUpgrade AllowSameVersionUpgrades="yes" DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MajorUpgrade AllowSameVersionUpgrades="yes" DowngradeErrorMessage="!(loc.DowngradeErrorMessage)" />
     <MediaTemplate EmbedCab="yes" />
 
     <Feature Id="ProductFeature" 

@@ -2,4 +2,5 @@
   <String Id="GuiLibs_Desc" Value="GUI do aplicativo e bibliotecas" />
   <String Id="DesktopShortcut_Title" Value="Atalho na área de trabalho" />
   <String Id="DesktopShortcut_Desc"  Value="Cria um atalho do aplicativo na área de trabalho." />
+  <String Id="DowngradeErrorMessage" Value="Uma versão mais recente de [ProductName] já está instalada." />
 </WixLocalization>

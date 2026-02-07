@@ -2,4 +2,5 @@
   <String Id="GuiLibs_Desc" Value="Interfejs graficzny aplikacji i biblioteki" />
   <String Id="DesktopShortcut_Title" Value="Skrót na pulpicie" />
   <String Id="DesktopShortcut_Desc"  Value="Tworzy skrót do aplikacji na pulpicie." />
+  <String Id="DowngradeErrorMessage" Value="Nowsza wersja [ProductName] jest już zainstalowana." />
 </WixLocalization>
