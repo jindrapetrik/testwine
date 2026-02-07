@@ -54,7 +54,7 @@ jobs:
         shell: pwsh
         run: |
             cd wix
-            .\Build.cmd
+            .\Build_Release.cmd
             
       - name: Upload installer
         uses: actions/upload-artifact@v4
