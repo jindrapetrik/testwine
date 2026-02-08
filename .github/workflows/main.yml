@@ -27,6 +27,7 @@ permissions:
 
 jobs:
   release:
+    runs-on: ubuntu-latest
     steps:
       - name: Create GitHub Release + upload assets
         uses: softprops/action-gh-release@v2
