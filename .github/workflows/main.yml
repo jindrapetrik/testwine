@@ -239,7 +239,7 @@ jobs:
       run: |
         $resource_hacker = "${{ steps.resource_hacker.outputs.path }}"
         
-        $resource_hacker -open resources\ffdec.exe -save resources\ffdec.exe -action addoverwrite -res build\splash.bmp -mask BITMAP,1
+        & $resource_hacker -open resources\ffdec.exe -save resources\ffdec.exe -action addoverwrite -res build\splash.bmp -mask BITMAP,1
     - name: Generate EXE version info
       shell: pwsh
       run: |
@@ -255,8 +255,8 @@ jobs:
       shell: pwsh
       run: |
         $resource_hacker = "${{ steps.resource_hacker.outputs.path }}"        
-        $resource_hacker -open versioninfo.rc -save versioninfo.res -action compile
-        $resource_hacker -open resources\ffdec.exe -save resources\ffdec.exe -action addoverwrite -res versioninfo.res -mask "Version Info,1"
+        & $resource_hacker -open versioninfo.rc -save versioninfo.res -action compile
+        & $resource_hacker -open resources\ffdec.exe -save resources\ffdec.exe -action addoverwrite -res versioninfo.res -mask "Version Info,1"
     - name: Upload EXE
       uses: actions/upload-artifact@v4
       with:
