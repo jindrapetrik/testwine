@@ -217,11 +217,7 @@ jobs:
       run: |
         sudo dpkg --add-architecture i386
         sudo apt-get update -y -qq
-        sudo apt-get install -y -qq wine
-        
-        export WINEPREFIX=$(pwd)/tools/wine
-        
-        wine --version        
+        sudo apt-get install -y -qq wine                               
                 
     - name: Set up Xorg
       run: |
@@ -251,6 +247,7 @@ jobs:
     
     - name: Replace EXE splash screen
       run: |
+        export WINEPREFIX=$(pwd)/tools/wine
         cp resources/ffdec.exe $WINEPREFIX/ffdec.exe
         cp build/splash.bmp $WINEPREFIX/splash.bmp
         xvfb-run wine $WINEPREFIX/resourcehacker/ResourceHacker.exe -open $WINEPREFIX/ffdec.exe -save $WINEPREFIX/ffdec.exe -action addoverwrite -res $WINEPREFIX/splash.bmp -mask BITMAP,1
@@ -266,6 +263,7 @@ jobs:
           versioninfo.rc
     - name: Replace EXE version info
       run: |
+        export WINEPREFIX=$(pwd)/tools/wine
         cp resources/ffdec.exe $WINEPREFIX/ffdec.exe
         cp versioninfo.rc $WINEPREFIX/versioninfo.rc
         xvfb-run wine $WINEPREFIX/resourcehacker/ResourceHacker.exe -open $WINEPREFIX/versioninfo.rc -save $WINEPREFIX/versioninfo.res -action compile
