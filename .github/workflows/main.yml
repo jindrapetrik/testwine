@@ -35,9 +35,9 @@ jobs:
       - name: Create GitHub Release + upload assets
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: "my_tag1"
+          tag_name: "my_tag2"
           name: 'Test release'
-          body_path: ./release-notes.md
+          body_path: ${{ github.workspace }}release-notes.md
           preserve_order: true
           prerelease: true
           fail_on_unmatched_files: true
