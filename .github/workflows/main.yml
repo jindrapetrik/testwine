@@ -26,7 +26,21 @@ permissions:
   id-token: write
 
 jobs:
+  release:
+    steps:
+      - name: Create GitHub Release + upload assets
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "my_tag1"
+          name: 'Test release'
+          body_path: ./release-notes.md
+          preserve_order: true
+          prerelease: true
+          fail_on_unmatched_files: true
+          files: |
+            dist/ffdec.exe
   compute-version:
+    if: false
     name: Compute version
     runs-on: windows-latest
 
@@ -165,7 +179,8 @@ jobs:
   installer:
     runs-on: windows-latest
     needs: compute-version
-    if: needs.compute-version.outputs.doRelease == 'true'
+    #if: needs.compute-version.outputs.doRelease == 'true'
+    if: false
     steps:
       - name: Checkout
         uses: actions/checkout@v4
