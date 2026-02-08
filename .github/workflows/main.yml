@@ -243,7 +243,8 @@ jobs:
         unzip -o "$RH_ZIP" -d "$RH_DIR"
       
     - name: Generate EXE splash screen
-      run: |        
+      run: |     
+        mkdir -p build/classes
         javac -d build/classes libsrc/ffdec_lib/src/com/jpexs/decompiler/flash/helpers/BMPFile.java
         javac -cp build/classes -d build/classes src/com/jpexs/build/SplashScreenGenerator.java        
         java -cp build/classes com.jpexs.build.SplashScreenGenerator "${{ needs.compute-version.outputs.verLong }}"
