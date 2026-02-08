@@ -243,15 +243,12 @@ jobs:
         unzip -o "$RH_ZIP" -d "$RH_DIR"
       
     - name: Generate EXE splash screen
-      shell: pwsh
       run: |        
-        mkdir build/classes
         javac -d build/classes libsrc/ffdec_lib/src/com/jpexs/decompiler/flash/helpers/BMPFile.java
         javac -cp build/classes -d build/classes src/com/jpexs/build/SplashScreenGenerator.java        
         java -cp build/classes com.jpexs.build.SplashScreenGenerator "${{ needs.compute-version.outputs.verLong }}"
     
     - name: Replace EXE splash screen
-      shell: cmd
       run: |
         cp resources/ffdec.exe $WINEPREFIX/ffdec.exe
         cp build/splash.bmp $WINEPREFIX/splash.bmp
@@ -267,7 +264,6 @@ jobs:
           -e 's/@VERSION@/${{ needs.compute-version.outputs.verShort }}/g' \
           versioninfo.rc
     - name: Replace EXE version info
-      shell: cmd
       run: |
         cp resources/ffdec.exe $WINEPREFIX/ffdec.exe
         cp versioninfo.rc $WINEPREFIX/versioninfo.rc
