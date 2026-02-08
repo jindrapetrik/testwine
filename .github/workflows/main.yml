@@ -203,8 +203,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: compute-version
     if: needs.compute-version.outputs.doRelease == 'true'
-    env:
-        WINEPREFIX: tools/wine
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -220,7 +218,10 @@ jobs:
         sudo dpkg --add-architecture i386
         sudo apt-get update -y -qq
         sudo apt-get install -y -qq wine
-        wine --version
+        
+        export WINEPREFIX=$(pwd)/tools/wine
+        
+        wine --version        
                 
     - name: Set up Xorg
       run: |
