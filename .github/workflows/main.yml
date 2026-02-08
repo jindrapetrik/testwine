@@ -37,7 +37,7 @@ jobs:
         with:
           tag_name: "my_tag2"
           name: 'Test release'
-          body_path: ${{ github.workspace }}release-notes.md
+          body_path: ./hello.txt
           preserve_order: true
           prerelease: true
           fail_on_unmatched_files: true
