@@ -235,11 +235,9 @@ jobs:
         java -cp build/classes com.jpexs.build.SplashScreenGenerator "${{ needs.compute-version.outputs.verLong }}"
     
     - name: Replace EXE splash screen
-      shell: pwsh
+      shell: cmd
       run: |
-        $resource_hacker = "${{ steps.resource_hacker.outputs.path }}"
-        
-        & $resource_hacker -open resources\ffdec.exe -save resources\ffdec.exe -action addoverwrite -res build\splash.bmp -mask BITMAP,1
+        "${{ steps.resource_hacker.outputs.path }}" -open resources\ffdec.exe -save resources\ffdec.exe -action addoverwrite -res build\splash.bmp -mask BITMAP,1
     - name: Generate EXE version info
       shell: pwsh
       run: |
@@ -252,11 +250,10 @@ jobs:
         $t = $t -creplace '@VERSION@', '${{ needs.compute-version.outputs.verShort }}'
         Set-Content -Path 'versioninfo.rc' -Value $t -Encoding UTF8
     - name: Replace EXE version info
-      shell: pwsh
+      shell: cmd
       run: |
-        $resource_hacker = "${{ steps.resource_hacker.outputs.path }}"        
-        & $resource_hacker -open versioninfo.rc -save versioninfo.res -action compile
-        & $resource_hacker -open resources\ffdec.exe -save resources\ffdec.exe -action addoverwrite -res versioninfo.res -mask "Version Info,1"
+        "${{ steps.resource_hacker.outputs.path }}" -open versioninfo.rc -save versioninfo.res -action compile
+        "${{ steps.resource_hacker.outputs.path }}" -open resources\ffdec.exe -save resources\ffdec.exe -action addoverwrite -res versioninfo.res -mask "Version Info,1"
     - name: Upload EXE
       uses: actions/upload-artifact@v4
       with:
