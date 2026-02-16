@@ -26,12 +26,11 @@ permissions:
   id-token: write
   
   
-if: false  
-
 jobs:
   compute-version:
     name: Compute version
     runs-on: windows-latest
+    if: false
 
     outputs:
       doRelease:   ${{ steps.vars.outputs.doRelease }}
