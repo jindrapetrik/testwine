@@ -13,4 +13,6 @@ on:
 jobs:
   hello2:
     runs-on: ubuntu-latest
-    run: echo "HELLO WORLD 2"
+    steps:
+      - name: Hello
+        run: echo "HELLO WORLD 2"
